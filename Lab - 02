@@ -1,0 +1,325 @@
+# Task - 01: Building Blocks
+
+def check_similar(building_1, building_2):
+  temp1 = building_1
+  temp2 = building_2
+
+  while temp1 != None and temp2 != None:
+    if temp1.elem != temp2.elem:
+      return "Not Similar"
+    temp1 = temp1.next
+    temp2 = temp2.next
+
+  if temp1 != None or temp2 != None:
+    return "Not Similar"
+
+  return "Similar"
+
+print('==============Test Case 1=============')
+building_1 = createList(np.array(['Red', 'Green', 'Yellow', 'Red', 'Blue', 'Green']))
+building_2 = createList(np.array(['Red', 'Green', 'Yellow', 'Red', 'Blue', 'Green']))
+print('Building 1: ', end = ' ')
+printLinkedList(building_1)
+print('Building 2: ', end = ' ')
+printLinkedList(building_2)
+returned_value = check_similar(building_1, building_2)
+print(returned_value) #This should print 'Similar'
+unittest.output_test(returned_value, 'Similar')
+print()
+
+print('==============Test Case 2=============')
+building_1 = createList(np.array(['Red', 'Green', 'Yellow', 'Red', 'Yellow', 'Green']))
+building_2 = createList(np.array(['Red', 'Green', 'Yellow', 'Red', 'Blue', 'Green']))
+print('Building 1: ', end = ' ')
+printLinkedList(building_1)
+print('Building 2: ', end = ' ')
+printLinkedList(building_2)
+returned_value = check_similar(building_1, building_2)
+print(returned_value) #This should print 'Not Similar'
+unittest.output_test(returned_value, 'Not Similar')
+print()
+
+print('==============Test Case 3=============')
+building_1 = createList(np.array(['Red', 'Green', 'Yellow', 'Red', 'Blue', 'Green']))
+building_2 = createList(np.array(['Red', 'Green', 'Yellow', 'Red', 'Blue', 'Green', 'Blue']))
+print('Building 1: ', end = ' ')
+printLinkedList(building_1)
+print('Building 2: ', end = ' ')
+printLinkedList(building_2)
+returned_value = check_similar(building_1, building_2)
+print(returned_value) #This should print 'Not Similar'
+unittest.output_test(returned_value, 'Not Similar')
+print()
+
+print('==============Test Case 4=============')
+building_1 = createList(np.array(['Red', 'Green', 'Yellow', 'Red', 'Blue', 'Green', 'Blue']))
+building_2 = createList(np.array(['Red', 'Green', 'Yellow', 'Red', 'Blue', 'Green']))
+print('Building 1: ', end = ' ')
+printLinkedList(building_1)
+print('Building 2: ', end = ' ')
+printLinkedList(building_2)
+returned_value = check_similar(building_1, building_2)
+print(returned_value) #This should print 'Not Similar'
+unittest.output_test(returned_value, 'Not Similar')
+print()
+
+# Task - 02: Remove Compartment
+
+def remove_compartment(head,n):
+  count = 0
+  temp = head
+  while temp != None:
+    count += 1
+    temp = temp.next
+  if n > count:
+    return head
+  if n == count:
+    return head.next
+  temp = head
+  for i in range(count - n - 1):
+    temp = temp.next
+  if temp.next != None:
+    temp.next = temp.next.next
+  return head
+
+print('==============Test Case 1=============')
+head = createList(np.array([10,15,34,41,56,72]))
+print('Original Compartment Sequence: ', end = ' ')
+printLinkedList(head)
+head = remove_compartment(head,2)
+print('Changed Compartment Sequence: ', end = ' ')
+printLinkedList(head) #This should print 10-->15-->34-->41-->72
+print()
+print('==============Test Case 2=============')
+head = createList(np.array([10,15,34,41,56,72]))
+print('Original Compartment Sequence: ', end = ' ')
+printLinkedList(head)
+head = remove_compartment(head,7)
+print('Changed Compartment Sequence: ', end = ' ')
+printLinkedList(head) #This should print 10-->15-->34-->41-->56-->72
+print()
+print('==============Test Case 3=============')
+head = createList(np.array([10,15,34,41,56,72]))
+print('Original Compartment Sequence: ', end = ' ')
+printLinkedList(head)
+head = remove_compartment(head,6)
+print('Changed Compartment Sequence: ', end = ' ')
+
+#Task - 03: Assemble Conga Line
+
+def assemble_conga_line(conga_line):
+  temp = conga_line
+  while temp != None and temp.next != None:
+    if temp.elem > temp.next.elem:
+      return "False"
+    temp = temp.next
+  return "True"
+
+print('==============Test Case 1=============')
+conga_line = createList(np.array([10,15,34,41,56,72]))
+print('Original Conga Line: ', end = ' ')
+printLinkedList(conga_line)
+returned_value = assemble_conga_line(conga_line)
+print(returned_value) #This should print True
+unittest.output_test(returned_value, True)
+print()
+print('==============Test Case 2=============')
+conga_line = createList(np.array([10,15,44,41,56,72]))
+print('Original Conga Line: ', end = ' ')
+printLinkedList(conga_line)
+returned_value = assemble_conga_line(conga_line)
+print(returned_value) #This should print False
+unittest.output_test(returned_value, False)
+print()
+
+# Task - 04: Word Decoder
+
+def word_Decoder(head):
+    count = 0
+    temp = head
+    while temp != None:
+        count += 1
+        temp = temp.next
+    multiplier = 13 % count
+    new_head = None
+    new_tail = None
+    temp = head.next
+    idx = 1
+    while temp != None:
+        if idx % multiplier == 0:
+            new_node = Node(temp.elem)
+            if new_head == None:
+                new_head = new_node
+                new_tail = new_node
+            else:
+                new_tail.next = new_node
+                new_tail = new_node
+        idx += 1
+        temp = temp.next
+    reversed_head = None
+    temp = new_head
+    while temp != None:
+        new_node = Node(temp.elem)
+        new_node.next = reversed_head
+        reversed_head = new_node
+        temp = temp.next
+    none_node = Node('None')
+    none_node.next = reversed_head
+    reversed_head = none_node
+    return reversed_head
+
+print('==============Test Case 1=============')
+head = createList(np.array(['B', 'M', 'D', 'T', 'N', 'O', 'A', 'P', 'S', 'C']))
+print("Encoded Word:")
+printLinkedList(head) #This should print B→M→D→T→N→O→A→P→S→C
+
+result = word_Decoder(head)
+print("Decoded Word:")
+printLinkedList(result)    #This should print None→C→A→T
+
+print('==============Test Case 2=============')
+
+head = createList(np.array(['Z', 'O', 'T', 'N', 'X']))
+print("Encoded Word:")
+printLinkedList(head) #This should print Z→O→T→N→X
+
+result = word_Decoder(head)
+print("Decoded Word:")
+printLinkedList(result)    #This should print None→N
+
+# Task - 05: Alternate Merge
+
+def alternate_merge(head1, head2):
+  current1 = head1
+  current2 = head2
+  while current1 != None and current2 != None:
+    next1 = current1.next
+    next2 = current2.next
+    current1.next = current2
+    current2.next = next1
+    current1 = next1
+    current2 = next2
+  return head1
+
+print('==============Test Case 1=============')
+head1 = createList(np.array([1,2,6,8,11]))
+head2 = createList(np.array([5,7,3,9,4]))
+
+print("Linked List 1:")
+printLinkedList(head1)
+print("Linked List 2:")
+printLinkedList(head2)
+
+head = alternate_merge(head1, head2)
+print("Merged Linked List:")
+printLinkedList(head)    #This should print    1 --> 5 --> 2 --> 7 --> 6 --> 3 --> 8 --> 9 --> 11 --> 4
+
+
+print('==============Test Case 2=============')
+head1 = createList(np.array([5, 3, 2, -4]))
+head2 = createList(np.array([-4, -6, 1]))
+
+print("Linked List 1:")
+printLinkedList(head1)
+print("Linked List 2:")
+printLinkedList(head2)
+
+head = alternate_merge(head1, head2)
+print("Merged Linked List:")
+printLinkedList(head)    #This should print    5 → -4 -> 3 → -6 -> 2 -> 1 -> -4
+
+
+print('==============Test Case 3=============')
+head1 = createList(np.array([4, 2, -2, -4]))
+head2 = createList(np.array([8, 6, 5, -3]))
+
+print("Linked List 1:")
+printLinkedList(head1)
+print("Linked List 2:")
+printLinkedList(head2)
+
+head = alternate_merge(head1, head2)
+print("Merged Linked List:")
+printLinkedList(head)    #This should print   4-> 8 → 2-> 6 → -2 → 5 → -4 -> -3
+
+# Task - 6: Sum of Nodes
+
+def sum_dist(head, arr):
+  sum = 0
+  for i in range(len(arr)):
+    idx_arr = arr[i]
+    idx = 0
+    n = head
+    while n != None:
+      if idx == idx_arr:
+        sum += n.elem
+        break
+      n = n.next
+      idx += 1
+  return sum
+
+
+print('==============Test Case 1=============')
+LL1 = createList(np.array([10,16,-5,9,3,4]))
+dist = np.array([2,0,5,2,8])
+returned_value = sum_dist(LL1, dist)
+print(f'Sum of Nodes: {returned_value}') #This should print Sum of Nodes: 4
+unittest.output_test(returned_value, 4)
+print()
+
+# Task - 07: ID Generator
+
+def idGenerator(head1, head2, head3):
+  new_head = Node(head1.elem)
+  c1 = head1.next
+  while c1 != None:
+    temp = Node(c1.elem)
+    temp.next = new_head
+    new_head = temp
+    c1 = c1.next
+  new_tail = new_head
+  while new_tail.next != None:
+    new_tail = new_tail.next
+  c2 = head2
+  c3 = head3
+  while c2 != None and c3 != None:
+    sum_value = (c2.elem + c3.elem) % 10
+    new_node = Node(sum_value)
+    new_tail.next = new_node
+    new_tail = new_tail.next
+    c2 = c2.next
+    c3 = c3.next
+  return new_head
+
+print('==============Test Case 1=============')
+head1 = createList(np.array([0,3,2,2]))
+head2 = createList(np.array([5,2,2,1]))
+head3 = createList(np.array([4,3,2,1]))
+
+print("Linked List 1:")
+printLinkedList(head1)
+print("Linked List 2:")
+printLinkedList(head2)
+print("Linked List 3:")
+printLinkedList(head3)
+
+result = idGenerator(head1, head2, head3)
+print("New ID:")
+printLinkedList(result)    #This should print  2 → 2 → 3 → 0 → 9 → 5 → 4 → 2
+
+
+print('==============Test Case 2=============')
+head1 = createList(np.array([0,3,9,1]))
+head2 = createList(np.array([3,6,5,7]))
+head3 = createList(np.array([2,4,3,8]))
+
+print("Linked List 1:")
+printLinkedList(head1)
+print("Linked List 2:")
+printLinkedList(head2)
+print("Linked List 3:")
+printLinkedList(head3)
+
+result = idGenerator(head1, head2, head3)
+print("New ID:")
+printLinkedList(result)    #This should print 1 → 9 → 3 → 0 → 5 → 0 → 8 → 5
